@@ -1,0 +1,17 @@
+<%- include("templates/header") %> 
+<div class="container">
+    <h1>Login</h1>
+    <form action="/loginUser" method="post">
+        <input class="input-field" name="username" type="text" placeholder="username"> 
+        <input class="input-field" name="password" type="password" placeholder="password">
+        <button class='login-button'>Login</button>
+    </form>
+    <a href="/signup"><button class="signup-button" type="button">Sign Up</button></a>
+    <% if (userMsg != "undefined") { %>
+        <br><br> <%=userMsg%>
+    <% } 
+    if (passMsg != "undefined") {%>
+        <br><br> <%=passMsg%>
+    <% } %>
+</div>
+<%- include("templates/footer") %> 
