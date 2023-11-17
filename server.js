@@ -171,13 +171,16 @@ app.get('/loggedin', (req,res) => { // Logging in Page
 if (req.session.user_type == 'admin') {
     res.redirect('/admin')
 } else if(req.session.user_type == "user") {
-    res.redirect('/home')
+    res.redirect('/main')
 } else {
     req.session.destroy()
     res.redirect('/')
 }
 });
 
+app.get('/main', (req,res) => {
+    res.render('main')
+})
 
 app.post('/sign-out', (req,res) => {
 req.session.destroy();
