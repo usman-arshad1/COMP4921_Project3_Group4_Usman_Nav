@@ -1,0 +1,9 @@
+<%- include("templates/header") %>
+<h1>Add a Friend</h1>
+<form action="/add-friend" method="post">
+    <label for="friendUsername">Friend's Username:</label>
+    <input type="text" id="friendUsername" name="friendUsername" required>
+    <button type="submit">Send Request</button>
+</form>
+<a href="/main">Back to Main</a>
+<%- include("templates/footer") %>
