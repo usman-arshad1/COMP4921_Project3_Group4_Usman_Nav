@@ -187,7 +187,35 @@ req.session.destroy();
 res.redirect("/")
 });
 
-app.post('/add-friend', async (req, res) => {
+// for adding a friend
+app.get('/friend_req', async(req, res) =>{
+    res.render('friend_req')
+})
+
+// ----------- use once login works
+// app.get('/event_create', (req, res) => {
+//     if (req.session.authenticated) {
+//         res.render('event_create');
+//     } else {
+//         res.redirect('/login');
+//     }
+// });
+
+app.get('/event_create', async(req, res) =>{
+    res.render('event_create')
+})
+
+app.get('/event_delete', async(req, res) => {
+    res.render('event_delete')
+})
+
+app.get('/event_view', async(req, res) => {
+    res.render('event_view')
+})
+
+
+
+app.post('/friend_req', async (req, res) => {
     // id of user sending friend req
     const requesterId = req.session.user_id
     //username of friend to add
@@ -196,7 +224,8 @@ app.post('/add-friend', async (req, res) => {
     try {
         const friend = await db_query.get_A_user_by_username(friendUsername) // change this to query name we create
         if (!friend) {
-            res.send('Friend not found!')
+            // res.send('Friend not found!')
+            res.render('friend_req', {message: 'Friend not found!'})
             return
         }
 
@@ -204,19 +233,21 @@ app.post('/add-friend', async (req, res) => {
         const friendId = friend._id
         const existingRequest = await db_query.check_friend_req_exists(requesterId, friendId) // change db query name again
         if (existingRequest){
-            res.send('Friend req already sent')
+            // res.send('Friend req already sent')
+            res.render('friend_req', {message: 'Friend req already sent!'})
             return
         }
 
         await db_query.createFriendReq(requesterId, friendId) // change db query name
-        res.send('Friend req sent')
+        // res.send('Friend req sent')
+        res.render('friend_req', {message: 'Friend req sent!'})
     } catch(error) {
         console.log("Error: " + error)
         res.status(500).send('Error sending friend request')
     }
 })
 
-app.post('/create-event', async(req, res) => {
+app.post('/event_create', async(req, res) => {
     const userId = req.session.user_id
     const {title, start, end, color} = req.body
 
@@ -258,6 +289,7 @@ app.post('/delete-event', async(req, res) => {
     }
 })
 
+// show list of events for events view
 app.get('/events', async(req, res) => {
     const userId = req.session.user_id
     const eventType = req.query.type  // for ex: 'today', or 'upcoming' or 'past' or 'deleted'
