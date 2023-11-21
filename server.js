@@ -12,6 +12,7 @@ const MongoStore = require('connect-mongo');
 const database = include('dbConnection');
 const db_utils = include ('database/db_utils');
 const db_query = include('database/query');
+const calendar = include('fullcalendar')
 
 const bodyParser = require('body-parser');
 
