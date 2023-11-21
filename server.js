@@ -141,7 +141,7 @@ if(!username || !password) {
     var results = await db_query.getUser({username:username});
     if (results) {
         if(results.length == 1) {
-            if (bcrypt.compareSync(password, results[0].hashed_pass)) {
+            if (bcrypt.compareSync(password, results[0].password)) {
                 req.session.authenticated = true;
                 req.session.username = username;
                 req.session.cookie.maxAge = expireTime;
