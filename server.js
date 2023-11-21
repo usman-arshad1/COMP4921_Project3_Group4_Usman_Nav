@@ -185,6 +185,124 @@ req.session.destroy();
 res.redirect("/")
 });
 
+// for adding a friend
+app.get('/friend_req', async(req, res) =>{
+    res.render('friend_req', { stylesheet: '/css/friend_req.css' })
+})
+
+// ----------- use once login works
+// app.get('/event_create', (req, res) => {
+//     if (req.session.authenticated) {
+//         res.render('event_create');
+//     } else {
+//         res.redirect('/login');
+//     }
+// });
+
+app.get('/event_create', async(req, res) =>{
+    res.render('event_create', { stylesheet: '/css/event_create.css' })
+})
+
+app.get('/event_delete', async(req, res) => {
+    res.render('event_delete', { stylesheet: '/css/event_delete.css' })
+})
+
+app.get('/event_view', async(req, res) => {
+    res.render('event_view')
+})
+
+
+
+app.post('/friend_req', async (req, res) => {
+    // id of user sending friend req
+    const requesterId = req.session.user_id
+    //username of friend to add
+    const friendUsername = req.body.friendUsername // change the friendUsername to whatever we have in db
+
+    try {
+        const friend = await db_query.get_A_user_by_username(friendUsername) // change this to query name we create
+        if (!friend) {
+            // res.send('Friend not found!')
+            res.render('friend_req', {message: 'Friend not found!'})
+            return
+        }
+
+        // avoid sending duplicate friend req's
+        const friendId = friend._id
+        const existingRequest = await db_query.check_friend_req_exists(requesterId, friendId) // change db query name again
+        if (existingRequest){
+            // res.send('Friend req already sent')
+            res.render('friend_req', {message: 'Friend req already sent!'})
+            return
+        }
+
+        await db_query.createFriendReq(requesterId, friendId) // change db query name
+        // res.send('Friend req sent')
+        res.render('friend_req', {message: 'Friend req sent!'})
+    } catch(error) {
+        console.log("Error: " + error)
+        res.status(500).send('Error sending friend request')
+    }
+})
+
+app.post('/event_create', async(req, res) => {
+    const userId = req.session.user_id
+    const {title, start, end, color} = req.body
+
+    try {
+        // change db name
+        await db_query.createEvent({
+            userId,
+            title,
+            start: new Date(start),
+            end: new Date(end),
+            color,
+            participants: [], // there's none at the start
+            deleted: false
+        })
+
+        res.send('Event Created!')
+    } catch(error) {
+        console.log("Error: " + error)
+        res.status(500).send('Error created event')
+    }
+})
+
+app.post('/delete-event', async(req, res) => {
+    const eventId = req.body.eventId
+    const userId = req.session.user_id
+
+    try {
+        const event = await db_query.getEventbyId(eventId) // change name to query we make
+        if (!event || event.userId !== userId){
+            res.status(403).send('Unauthorized')
+            return
+        }
+
+        await db_query.softDeleteEvent(eventId, new Date())
+        res.send('Event Deleted')
+    } catch(error) {
+        console.log("Error: " + error)
+        res.status(500).send('Error deleting event')
+    }
+})
+
+// show list of events for events view
+app.get('/events', async(req, res) => {
+    const userId = req.session.user_id
+    const eventType = req.query.type  // for ex: 'today', or 'upcoming' or 'past' or 'deleted'
+
+    try {
+        const events = await db_query.getEventsByType(userId, eventType)
+        res.json(events)
+    } catch(error) {
+        console.log("Error: " + error)
+        res.status(500).send('Error fetching events')
+    }
+})
+
+
+
 app.use(express.static(__dirname + "/public"));
 
 

@@ -1,0 +1,19 @@
+<%- include("templates/header") %> 
+<h1>Create an Event</h1>
+<form action="/event_create" method="post">
+    <label for="title">Event Title:</label>
+    <input type="text" id="title" name="title" required>
+
+    <label for="start">Start Time:</label>
+    <input type="datetime-local" id="start" name="start" required>
+
+    <label for="end">End Time:</label>
+    <input type="datetime-local" id="end" name="end" required>
+
+    <label for="color">Color:</label>
+    <input type="color" id="color" name="color" required>
+
+    <button type="submit">Create Event</button>
+</form>
+<a href="/main">Back to Main</a>
+<%- include("templates/footer") %> 

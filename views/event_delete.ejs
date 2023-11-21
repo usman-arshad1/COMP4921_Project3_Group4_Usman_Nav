@@ -1,0 +1,13 @@
+<%- include("templates/header") %> 
+<h1>Delete an Event</h1>
+
+    <div>
+        <!-- <span> event.title </span> -->
+        <form action="/delete-event" method="post">
+            <input type="hidden" name="eventId" value="event">
+            <button type="submit">Delete</button>
+        </form>
+    </div>
+
+<a href="/main">Back to Main</a>
+<%- include("templates/footer") %> 
