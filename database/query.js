@@ -2,8 +2,8 @@ const database = include('dbConnection');
 
 async function createUser(postData) {
 	let createUserSQL = `
-		INSERT INTO user (username, email, hashed_pass, user_type_id) 
-		VALUES (:user, :email, :hashed_pass, 1);
+		INSERT INTO users (username, email, password, type) 
+		VALUES (:user, :email, :hashed_pass, 'user');
 	`;
 	let params = {
 		user: postData.username,
@@ -26,8 +26,7 @@ async function createUser(postData) {
 async function getUser(postData) {
 	let getUserSQL = `
 		SELECT *
-		FROM user
-		JOIN user_type USING(user_type_id)
+		FROM users
 		WHERE username = :username;
 	`;
 
