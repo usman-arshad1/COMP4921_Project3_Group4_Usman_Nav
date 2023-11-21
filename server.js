@@ -22,8 +22,6 @@ const app = express();
 
 const expireTime = 60 * 60 * 1000; 
 
-var users = [];
-
 /* secret information section */
 const mongodb_user = process.env.MONGODB_USER;
 const mongodb_password = process.env.MONGODB_PASSWORD;
