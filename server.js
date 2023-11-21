@@ -189,7 +189,7 @@ res.redirect("/")
 
 // for adding a friend
 app.get('/friend_req', async(req, res) =>{
-    res.render('friend_req')
+    res.render('friend_req', { stylesheet: '/css/friend_req.css' })
 })
 
 // ----------- use once login works
@@ -202,11 +202,11 @@ app.get('/friend_req', async(req, res) =>{
 // });
 
 app.get('/event_create', async(req, res) =>{
-    res.render('event_create')
+    res.render('event_create', { stylesheet: '/css/event_create.css' })
 })
 
 app.get('/event_delete', async(req, res) => {
-    res.render('event_delete')
+    res.render('event_delete', { stylesheet: '/css/event_delete.css' })
 })
 
 app.get('/event_view', async(req, res) => {
