@@ -221,7 +221,7 @@ app.post('/friend_req', async (req, res) => {
     const friendUsername = req.body.friendUsername // change the friendUsername to whatever we have in db
 
     try {
-        const friend = await db_query.get_A_user_by_username(friendUsername) // change this to query name we create
+        const friend = await db_query.getUser(friendUsername) // change this to query name we create
         if (!friend) {
             // res.send('Friend not found!')
             res.render('friend_req', {message: 'Friend not found!'})
