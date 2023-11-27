@@ -68,7 +68,7 @@ async function check_friend_req_exists(postData){
 		return false;
 	}
 }
-
+// create friend req
 async function createFriendReq(postData) {
 	let createFriendReqSQL = `
 	INSERT 	INTO friends (user_id1, user_id2, status, action_user_id)
