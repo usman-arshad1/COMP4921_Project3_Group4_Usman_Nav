@@ -2,7 +2,7 @@
   "name": "comp4921_project3_group4_usman_nav",
   "version": "1.0.0",
   "description": "A Calendar Project to show Database Experience",
-  "main": "dbConnection.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
